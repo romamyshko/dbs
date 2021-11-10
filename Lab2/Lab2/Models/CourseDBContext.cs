@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 #nullable disable
 
-namespace Lab2
+namespace Lab2.Models
 {
     public partial class CourseDBContext : DbContext
     {
@@ -20,9 +20,9 @@ namespace Lab2
         {
         }
 
-        public CourseDBContext(IOptions<DbConnectionInfo> dbConnectionInfo)
+        public CourseDBContext(DbConnectionInfo dbConnectionInfo)
         {
-            _connectionSting = dbConnectionInfo.Value.CourseDBContext;
+            _connectionSting = dbConnectionInfo.CourseDBContext;
         }
 
         public virtual DbSet<Course> Courses { get; set; }
@@ -108,7 +108,7 @@ namespace Lab2
                 entity.ToTable("users");
 
                 entity.Property(e => e.UserId)
-                    .ValueGeneratedNever()
+                    .UseSerialColumn()
                     .HasColumnName("user_id");
 
                 entity.Property(e => e.Age).HasColumnName("age");

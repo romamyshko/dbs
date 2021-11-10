@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Lab2
+namespace Lab2.Models
 {
     public partial class Lecture
     {

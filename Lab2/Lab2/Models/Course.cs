@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Lab2
+namespace Lab2.Models
 {
     public partial class Course
     {
@@ -16,6 +16,7 @@ namespace Lab2
         public int CourseId { get; set; }
         public string Name { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public int Cost { get; set; }
 
         public virtual ICollection<Lecture> Lectures { get; set; }
         public virtual ICollection<Subscription> Subscriptions { get; set; }
