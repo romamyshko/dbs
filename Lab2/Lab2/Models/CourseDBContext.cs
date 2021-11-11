@@ -45,7 +45,7 @@ namespace Lab2.Models
                 entity.ToTable("courses");
 
                 entity.Property(e => e.CourseId)
-                    .ValueGeneratedNever()
+                    .UseSerialColumn()
                     .HasColumnName("course_id");
 
                 entity.Property(e => e.CreatedAt)
@@ -55,6 +55,10 @@ namespace Lab2.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name");
+
+                entity.Property(e => e.Cost)
+                    .IsRequired()
+                    .HasColumnName("cost");
             });
 
             modelBuilder.Entity<Lecture>(entity =>
@@ -62,7 +66,7 @@ namespace Lab2.Models
                 entity.ToTable("lectures");
 
                 entity.Property(e => e.LectureId)
-                    .ValueGeneratedNever()
+                    .UseSerialColumn()
                     .HasColumnName("lecture_id");
 
                 entity.Property(e => e.CourseId).HasColumnName("course_id");
@@ -83,7 +87,7 @@ namespace Lab2.Models
                 entity.ToTable("subscriptions");
 
                 entity.Property(e => e.SubscriptionId)
-                    .ValueGeneratedNever()
+                    .UseSerialColumn()
                     .HasColumnName("subscription_id");
 
                 entity.Property(e => e.CourseId).HasColumnName("course_id");

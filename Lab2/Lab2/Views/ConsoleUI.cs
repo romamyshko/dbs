@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lab2.Models;
+using Lab2.Controllers;
 using Microsoft.Extensions.Options;
 
 namespace Lab2.Views
@@ -12,15 +13,17 @@ namespace Lab2.Views
     {
         private readonly CourseDBContext _courseDBContext;
         private readonly DbConnectionInfo _dbConnectionInfo;
+        private readonly CourseController _courseController;
+        private readonly LectureController _lectureController;
 
         public ConsoleUI(string databaseConnection)
         {
             _dbConnectionInfo = new DbConnectionInfo();
             _dbConnectionInfo.CourseDBContext = databaseConnection;
             _courseDBContext = new CourseDBContext(_dbConnectionInfo);
+            _courseController = new CourseController(_courseDBContext);
+            _lectureController = new LectureController(_courseDBContext);
         }
-
-        // need to add controllers
 
         public void Run()
         {
@@ -113,7 +116,7 @@ namespace Lab2.Views
             {
                 Console.Clear();
 
-                Console.WriteLine("Choose operation:\r\n[1] create\r\n[2] edit\r\n[3] delete\r\n\r\n write \"back\" to return to the main menu");
+                Console.WriteLine("Choose operation:\r\n[1] create\r\n[2] edit\r\n[3] delete\r\n\r\n write \"back\" to step back");
 
                 string entered = Console.ReadLine();
 
@@ -134,10 +137,13 @@ namespace Lab2.Views
                 switch (option)
                 {
                     case 1:
-                        OperationsWithCourses();
+                        CreateCourse();
                         break;
                     case 2:
-                        OperationsWithLectures();
+                        EditCourse();
+                        break;
+                    case 3:
+                        DeleteCourse();
                         break;
                     default:
                         break;
@@ -148,6 +154,72 @@ namespace Lab2.Views
         }
 
         private void CreateCourse()
+        {
+            while (true)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Write name of course\r\n\r\n write \"back\" to step back");
+
+                Course course = new Course();   
+                string name = Console.ReadLine();
+
+                if (name.Equals("back"))
+                    break;
+
+                course.Name = name;
+
+                string cost;
+                int intCost = -1;
+
+                while (true)
+                {
+                    Console.Clear();
+
+                    Console.WriteLine("Write cost of course\r\n\r\n write \"back\" to step back");
+
+                    cost = Console.ReadLine();
+
+                    if (cost.Equals("back"))
+                        break;
+
+                    bool isInt = int.TryParse(cost, out intCost);
+
+                    if (!isInt)
+                    {
+                        Console.Clear();
+                        continue;
+                    }
+
+                    break;
+                }
+
+                if (intCost == -1)
+                    break;
+
+                course.Cost = intCost;
+                course.CreatedAt = DateTime.Now;
+
+                
+
+                if (_courseController.Create(course) == 1)
+                {
+                    Console.WriteLine("Operation is successfull. Press any key to continue...");
+                    if (Console.ReadLine() != "")
+                        return;
+                }
+
+
+                return;
+            }
+        }
+
+        private void EditCourse()
+        {
+
+        }
+
+        private void DeleteCourse()
         {
 
         }
