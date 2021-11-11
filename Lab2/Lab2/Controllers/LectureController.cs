@@ -4,27 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lab2.Models;
-using Microsoft.Extensions.Options;
 
 namespace Lab2.Controllers
 {
-    public class UserController
-    { 
+    public class LectureController
+    {
         private readonly CourseDBContext _courseDBContext;
 
-        public UserController(CourseDBContext courseDBContext)
+        public LectureController(CourseDBContext courseDBContext)
         {
             _courseDBContext = courseDBContext;
         }
 
-        public int Create(User user)
+        public int Create(Lecture lecture)
         {
             int result = 0;
 
             try
             {
-                _courseDBContext.Add(user);
-                
+                _courseDBContext.Add(lecture);
+
                 result = 1;
             }
             catch (Exception)
@@ -37,11 +36,11 @@ namespace Lab2.Controllers
             return result;
         }
 
-        public void Update(User updatedUser)
+        public void Update(Lecture updatedLecture)
         {
             try
             {
-                _courseDBContext.Update(updatedUser);
+                _courseDBContext.Update(updatedLecture);
                 _courseDBContext.SaveChanges();
             }
             catch
@@ -59,8 +58,8 @@ namespace Lab2.Controllers
 
             try
             {
-                User user = _courseDBContext.Users.Find(id);
-                _courseDBContext.Users.Remove(user);
+                Lecture lecture = _courseDBContext.Lectures.Find(id);
+                _courseDBContext.Lectures.Remove(lecture);
                 _courseDBContext.SaveChanges();
             }
             catch

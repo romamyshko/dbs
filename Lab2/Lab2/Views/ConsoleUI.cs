@@ -26,16 +26,25 @@ namespace Lab2.Views
         {
             while (true)
             {
-                Console.WriteLine("Choose working option:\r\n[1] search in the database\r\n[2] make changes in the database");
+                Console.WriteLine("Choose working option:\r\n[1] search in the database\r\n[2] make changes in the database\r\n\r\nwrite \"exit\" to exit the program");
 
                 string entered = Console.ReadLine();
+
+                if (entered.Equals("exit"))
+                {
+                    Console.WriteLine("Ending session...");
+                    break;
+                }
+                    
                 int option;
 
                 bool isInt = int.TryParse(entered, out option);
 
                 if (!isInt)
+                {
+                    Console.Clear();
                     continue;
-
+                }
 
                 switch (option)
                 {
@@ -43,22 +52,109 @@ namespace Lab2.Views
                         Console.WriteLine();
                         break;
                     case 2:
-                        Console.WriteLine();
+                        RunMakingChanges();
                         break;
                     default:
                         break;
                 }
+
+                Console.Clear();
             }
         }
 
         private void RunSearch()
         {
-            
+            Console.Clear();
         }
 
         private void RunMakingChanges()
         {
-            Console.WriteLine("Choose table:");
+            while (true)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Choose table:\r\n[1] courses\r\n[2] lectures\r\n\r\n write \"back\" to return to the main menu");
+
+                string entered = Console.ReadLine();
+
+                if (entered.Equals("back"))
+                    break;
+                
+
+                int option;
+
+                bool isInt = int.TryParse(entered, out option);
+
+                if (!isInt)
+                {
+                    Console.Clear();
+                    continue;
+                }
+
+                switch (option)
+                {
+                    case 1:
+                        OperationsWithCourses();
+                        break;
+                    case 2:
+                        OperationsWithLectures();
+                        break;
+                    default:
+                        break;
+                }
+
+                Console.Clear();
+            }
+        }
+
+        private void OperationsWithCourses()
+        {
+            while (true)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Choose operation:\r\n[1] create\r\n[2] edit\r\n[3] delete\r\n\r\n write \"back\" to return to the main menu");
+
+                string entered = Console.ReadLine();
+
+                if (entered.Equals("back"))
+                    break;
+
+
+                int option;
+
+                bool isInt = int.TryParse(entered, out option);
+
+                if (!isInt)
+                {
+                    Console.Clear();
+                    continue;
+                }
+
+                switch (option)
+                {
+                    case 1:
+                        OperationsWithCourses();
+                        break;
+                    case 2:
+                        OperationsWithLectures();
+                        break;
+                    default:
+                        break;
+                }
+
+                Console.Clear();
+            }
+        }
+
+        private void CreateCourse()
+        {
+
+        }
+
+        private void OperationsWithLectures()
+        {
+
         }
     }
 }
