@@ -12,5 +12,10 @@ namespace Lab2.Models
         public int CourseId { get; set; }
 
         public virtual Course Course { get; set; }
+
+        public override string ToString()
+        {
+            return $"Lecture Id: {LectureId}, name: {Name}, course Id: {CourseId}";
+        }
     }
 }

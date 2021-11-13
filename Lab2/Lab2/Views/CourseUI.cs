@@ -11,16 +11,21 @@ namespace Lab2.Views
 {
     internal class CourseUI
     {
-        private CourseController _controller;
+        private readonly CourseController _courseController;
+        private readonly LectureController _lectureController;
 
-        public CourseUI(CourseController controller) => _controller = controller;
+        public CourseUI(CourseController courseController, LectureController lectureController)
+        {
+            _courseController = courseController;
+            _lectureController = lectureController;
+        }
 
         internal void OperationsWithCourses()
         {
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Choose operation:\r\n[1] create\r\n[2] edit\r\n[3] delete\r\n\r\n write \"back\" to step back");
+                Console.WriteLine("Choose operation [course]:\r\n[1] create\r\n[2] edit\r\n[3] delete\r\n\r\n write \"back\" to step back");
 
                 try
                 {
@@ -74,15 +79,28 @@ namespace Lab2.Views
                 course.Cost = intCost;
                 course.CreatedAt = DateTime.Now;
 
-                if (_controller.Create(course) == 1)
+                if (_courseController.Create(course) == 1)
                 {
-                    Console.WriteLine("Operation is successfull. Press any key to continue...");
-                    if (Console.ReadKey().Equals(new ConsoleKeyInfo()))
-                        return;
+                    Console.WriteLine("Course was added successfully. Do you want to add lectures? [y/n]");
+                    string answer = Console.ReadLine();
+
+                    if(answer.Equals("y"))
+                    {
+                        OpenCreateLectureUI(course.CourseId);
+                    }
+                    return;
                 }
 
                 return;
             }
+        }
+
+        private void OpenCreateLectureUI(int courseId)
+        {
+            LectureUI lectureUI = new LectureUI(_lectureController);
+            lectureUI.CurrCourseId = courseId;
+            lectureUI.CreateLecture();
+            lectureUI.OperationsWithLectures();
         }
 
         private int GetCost()
@@ -133,7 +151,7 @@ namespace Lab2.Views
                 if (courseId == -1)
                     continue;
 
-                Course course = _controller.GetCourse(courseId);
+                Course course = _courseController.GetCourse(courseId);
 
                 if (course == null)
                 {
@@ -152,7 +170,7 @@ namespace Lab2.Views
                 {
                     course.Name = enteredData[0];
                     course.Cost = int.Parse(enteredData[1]);
-                    if (_controller.Update(course) == 1)
+                    if (_courseController.Update(course) == 1)
                     {
                         Console.WriteLine("Operation is successfull. Press any key to continue...");
                         if (Console.ReadKey().Equals(new ConsoleKeyInfo()))
@@ -186,7 +204,7 @@ namespace Lab2.Views
                     continue;
                 try
                 {
-                    if (_controller.Delete(courseId) == 1)
+                    if (_courseController.Delete(courseId) == 1)
                     {
                         Console.WriteLine("Operation is successfull. Press any key to continue...");
                         if (Console.ReadKey().Equals(new ConsoleKeyInfo()))

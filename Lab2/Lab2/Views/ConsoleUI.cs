@@ -24,7 +24,7 @@ namespace Lab2.Views
             _courseDBContext = new CourseDBContext(_dbConnectionInfo);
             _courseController = new CourseController(_courseDBContext);
             _lectureController = new LectureController(_courseDBContext);
-            _courseUI = new CourseUI(_courseController);
+            _courseUI = new CourseUI(_courseController, _lectureController);
         }
 
         public void Run()
@@ -97,7 +97,7 @@ namespace Lab2.Views
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Choose table:\r\n[1] courses\r\n[2] lectures\r\n\r\n write \"back\" to return to the main menu");
+                Console.WriteLine("Choose table:\r\n[1] courses\r\n\r\n write \"back\" to return to the main menu");
 
                 try
                 {
@@ -107,9 +107,6 @@ namespace Lab2.Views
                     {
                         case 1:
                             _courseUI.OperationsWithCourses();
-                            break;
-                        case 2:
-                            OperationsWithLectures();
                             break;
                         default:
                             break;
@@ -124,13 +121,6 @@ namespace Lab2.Views
                     break;
                 }
             }
-        }
-
-        
-
-        private void OperationsWithLectures()
-        {
-
         }
     }
 }

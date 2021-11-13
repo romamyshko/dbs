@@ -18,35 +18,33 @@ namespace Lab2.Controllers
 
         public int Create(Lecture lecture)
         {
-            int result = 0;
-
             try
             {
                 _courseDBContext.Add(lecture);
-
-                result = 1;
+                return _courseDBContext.SaveChanges();
             }
             catch (Exception)
             {
-                Console.WriteLine("Creating error!");
                 return -1;
             }
-            _courseDBContext.SaveChanges();
-
-            return result;
         }
 
-        public void Update(Lecture updatedLecture)
+        public int Update(Lecture updatedLecture)
         {
             try
             {
                 _courseDBContext.Update(updatedLecture);
-                _courseDBContext.SaveChanges();
+                return _courseDBContext.SaveChanges();
             }
             catch
             {
-                Console.WriteLine("Updating error!");
+                return -1;
             }
+        }
+
+        public Lecture GetLecture(int id)
+        {
+            return _courseDBContext.Lectures.Find(id);
         }
 
         public int Delete(int? id)
@@ -60,14 +58,12 @@ namespace Lab2.Controllers
             {
                 Lecture lecture = _courseDBContext.Lectures.Find(id);
                 _courseDBContext.Lectures.Remove(lecture);
-                _courseDBContext.SaveChanges();
+                return _courseDBContext.SaveChanges();
             }
             catch
             {
-                Console.WriteLine("Deleting error!");
+                return -1;
             }
-
-            return 1;
         }
     }
 }

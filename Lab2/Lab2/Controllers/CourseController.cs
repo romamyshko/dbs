@@ -18,21 +18,15 @@ namespace Lab2.Controllers
 
         public int Create(Course course)
         {
-            int result = 0;
-
             try
             {
                 _courseDBContext.Add(course);
-
-                result = 1;
+                return _courseDBContext.SaveChanges();
             }
             catch (Exception)
             {
                 return -1;
             }
-            _courseDBContext.SaveChanges();
-
-            return result;
         }
 
         public int Update(Course updatedCourse)
@@ -64,14 +58,12 @@ namespace Lab2.Controllers
             {
                 Course course = _courseDBContext.Courses.Find(id);
                 _courseDBContext.Courses.Remove(course);
-                _courseDBContext.SaveChanges();
+                return _courseDBContext.SaveChanges();
             }
             catch
             {
                 return -1;
             }
-
-            return 1;
         }
     }
 }
