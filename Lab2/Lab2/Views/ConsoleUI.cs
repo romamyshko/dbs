@@ -50,7 +50,11 @@ namespace Lab2.Views
                             break;
                     }
                 }
-                catch
+                catch (ArgumentException)
+                {
+                    continue;
+                }
+                catch (Exception)
                 {
                     break;
                 }
@@ -111,7 +115,11 @@ namespace Lab2.Views
                             break;
                     }
                 }
-                catch
+                catch (ArgumentException)
+                {
+                    continue;
+                }
+                catch (Exception)
                 {
                     break;
                 }

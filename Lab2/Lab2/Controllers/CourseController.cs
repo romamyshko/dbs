@@ -36,17 +36,24 @@ namespace Lab2.Controllers
             return result;
         }
 
-        public void Update(Course updatedCourse)
+        public int Update(Course updatedCourse)
         {
             try
             {
                 _courseDBContext.Update(updatedCourse);
-                _courseDBContext.SaveChanges();
+                 return _courseDBContext.SaveChanges();
             }
             catch
             {
                 Console.WriteLine("Updating error!");
             }
+
+            return 0;
+        }
+
+        public Course GetCourse(int id)
+        {
+            return _courseDBContext.Courses.Find(id);
         }
 
         public int Delete(int? id)

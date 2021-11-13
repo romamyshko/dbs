@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using Lab2.Models;
 using Lab2.Controllers;
 
@@ -40,7 +41,11 @@ namespace Lab2.Views
                             break;
                     }
                 }
-                catch
+                catch (ArgumentException)
+                {
+                    continue;
+                }
+                catch (Exception)
                 {
                     break;
                 }
@@ -116,13 +121,56 @@ namespace Lab2.Views
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Enter course id");
+                Console.WriteLine("Enter course id\r\n\r\n write \"back\" to step back");
 
-                int courseId = ConsoleUI.GetIntInput();
+                int courseId = -1;
 
+                try
+                {
+                    courseId = ConsoleUI.GetIntInput();
+                }
+                catch (ArgumentException)
+                {
+                    continue;
+                }
+                catch (Exception)
+                {
+                    return;
+                }
 
+                Course course = _controller.GetCourse(courseId);
+
+                if (course == null)
+                {
+                    Console.WriteLine("Course was not found");
+                    Thread.Sleep(1000);
+                    continue;
+                }
+
+                Console.WriteLine("Course by Id #{0}, name: {1}, cost: {2}, created at: {3}", course.CourseId, course.Name, course.Cost, course.CreatedAt);
+                Console.WriteLine("\r\nWrite new name and new cost in such format\r\nnewName;cost");
+                string[] enteredData = Console.ReadLine().Split(';');
+
+                if (enteredData.Length != 2)
+                    continue;
+                try
+                {
+                    course.Name = enteredData[0];
+                    course.Cost = int.Parse(enteredData[1]);
+                    if (_controller.Update(course) == 1)
+                    {
+                        Console.WriteLine("Operation is successfull. Press any key to continue...");
+                        if (Console.ReadKey().Equals(new ConsoleKeyInfo()))
+                            return;
+                    }
+                }
+                catch
+                {
+                    continue;
+                }
+                
+                return;
             }
-            
         }
 
         private void DeleteCourse()
