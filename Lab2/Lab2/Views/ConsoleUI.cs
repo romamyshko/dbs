@@ -24,7 +24,7 @@ namespace Lab2.Views
             _courseDBContext = new CourseDBContext(_dbConnectionInfo);
             _courseController = new CourseController(_courseDBContext);
             _lectureController = new LectureController(_courseDBContext);
-            _courseUI = new CourseUI(_courseController, _lectureController);
+            _courseUI = new CourseUI(_courseController, _lectureController, _courseDBContext);
         }
 
         public void Run()

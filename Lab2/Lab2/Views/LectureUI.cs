@@ -12,6 +12,7 @@ namespace Lab2.Views
     {
         private LectureController _controller;
         public int CurrCourseId { get; set; }
+        public List<Lecture> lectures { get; set; }
 
         public LectureUI(LectureController controller) => _controller = controller;
 
@@ -20,7 +21,7 @@ namespace Lab2.Views
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Choose operation [lecture]:\r\n[1] create\r\n[2] edit\r\n[3] delete\r\n\r\n write \"back\" to step back");
+                Console.WriteLine($"Choose operation [lecture of course [#{CurrCourseId}]]:\r\n[1] create\r\n[2] edit\r\n[3] delete\r\n\r\n write \"back\" to step back");
 
                 try
                 {
@@ -78,10 +79,30 @@ namespace Lab2.Views
             }
         }
 
-        private void EditLecture()
+        private void PrintLectures()
+        {
+            foreach(var lecture in lectures)
+            {
+                Console.WriteLine(lecture);
+            }
+        }
+
+        internal void EditLecture()
         {
             while (true)
             {
+                Console.Clear();
+
+                try
+                { 
+                    PrintLectures(); 
+                }
+                catch
+                {
+                    Console.WriteLine("Error printing lectures");
+                    Thread.Sleep(4000);
+                }
+                 
                 int lectureId = -1;
                 try
                 {
@@ -172,7 +193,7 @@ namespace Lab2.Views
 
         private int GetLectureId()
         {
-            Console.Clear();
+            
             Console.WriteLine("Enter lecture id\r\n\r\n write \"back\" to step back");
 
             int lectureId  = -1;

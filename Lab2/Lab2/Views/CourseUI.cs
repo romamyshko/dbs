@@ -13,11 +13,13 @@ namespace Lab2.Views
     {
         private readonly CourseController _courseController;
         private readonly LectureController _lectureController;
+        private readonly CourseDBContext _dbContext;
 
-        public CourseUI(CourseController courseController, LectureController lectureController)
+        public CourseUI(CourseController courseController, LectureController lectureController, CourseDBContext courseDBContext)
         {
             _courseController = courseController;
             _lectureController = lectureController;
+            _dbContext = courseDBContext;
         }
 
         internal void OperationsWithCourses()
@@ -103,6 +105,23 @@ namespace Lab2.Views
             lectureUI.OperationsWithLectures();
         }
 
+        private void OpenEditLectureUI(int courseId)
+        {
+            LectureUI lectureUI = new LectureUI(_lectureController);
+            lectureUI.CurrCourseId = courseId;
+            lectureUI.lectures = _dbContext.Lectures.Where(lecture => lecture.CourseId.Equals(courseId)).ToList<Lecture>();
+            lectureUI.EditLecture();
+            lectureUI.OperationsWithLectures();
+        }
+
+        private void ShowLectures(List<Lecture> lectures)
+        {
+            foreach (Lecture l in lectures)
+            {
+                Console.WriteLine(l);
+            }
+        }
+
         private int GetCost()
         {
             int cost = 0;
@@ -172,9 +191,14 @@ namespace Lab2.Views
                     course.Cost = int.Parse(enteredData[1]);
                     if (_courseController.Update(course) == 1)
                     {
-                        Console.WriteLine("Operation is successfull. Press any key to continue...");
-                        if (Console.ReadKey().Equals(new ConsoleKeyInfo()))
-                            return;
+                        Console.WriteLine("Course was edited successfully. Do you want to edit lectures? [y/n]");
+                        string answer = Console.ReadLine();
+
+                        if (answer.Equals("y"))
+                        {
+                            OpenEditLectureUI(course.CourseId);
+                        }
+                        return;
                     }
                 }
                 catch
@@ -183,6 +207,14 @@ namespace Lab2.Views
                 }
                 
                 return;
+            }
+        }
+
+        private void DeleteLectures(List<Lecture> lectures)
+        {
+            foreach (Lecture l in lectures)
+            {
+                _lectureController.Delete(l.LectureId);
             }
         }
 
@@ -204,10 +236,23 @@ namespace Lab2.Views
                     continue;
                 try
                 {
+                    List<Lecture> lectures = _dbContext.Lectures.Where(lecture => lecture.CourseId.Equals(courseId)).ToList<Lecture>();
+
+                    ShowLectures(lectures);
+
+                    Console.WriteLine("Lectures will be deleted. Do you want to delete course? [y/n]");
+                    string answer = Console.ReadLine();
+
+                    if (answer.Equals("y"))
+                    {
+                        DeleteLectures(lectures);
+                    }
+
                     if (_courseController.Delete(courseId) == 1)
                     {
+
                         Console.WriteLine("Operation is successfull. Press any key to continue...");
-                        if (Console.ReadKey().Equals(new ConsoleKeyInfo()))
+                        if (Console.ReadLine() != "")
                             return;
                     } 
                     else
