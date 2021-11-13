@@ -211,7 +211,7 @@ namespace Lab2.Views
                 if (_courseController.Create(course) == 1)
                 {
                     Console.WriteLine("Operation is successfull. Press any key to continue...");
-                    if (Console.ReadLine() != "")
+                    if (Console.ReadKey().Equals(new ConsoleKeyInfo()))
                         return;
                 }
 
