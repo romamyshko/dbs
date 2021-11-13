@@ -29,40 +29,60 @@ namespace Lab2.Views
         {
             while (true)
             {
+                Console.Clear();
+
                 Console.WriteLine("Choose working option:\r\n[1] search in the database\r\n[2] make changes in the database\r\n\r\nwrite \"exit\" to exit the program");
 
-                string entered = Console.ReadLine();
-
-                if (entered.Equals("exit"))
+                try
                 {
-                    Console.WriteLine("Ending session...");
+                    int option = GetOption();
+
+                    switch (option)
+                    {
+                        case 1:
+                            Console.WriteLine();
+                            break;
+                        case 2:
+                            RunMakingChanges();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                catch
+                {
                     break;
                 }
-                    
-                int option;
-
-                bool isInt = int.TryParse(entered, out option);
-
-                if (!isInt)
-                {
-                    Console.Clear();
-                    continue;
-                }
-
-                switch (option)
-                {
-                    case 1:
-                        Console.WriteLine();
-                        break;
-                    case 2:
-                        RunMakingChanges();
-                        break;
-                    default:
-                        break;
-                }
-
+                
                 Console.Clear();
             }
+        }
+
+        private int GetOption()
+        {
+            string entered = Console.ReadLine();
+
+            if (entered.Equals("exit"))
+            {
+                Console.WriteLine("Ending session...");
+                Environment.Exit(0);
+            }
+            else if (entered.Equals("back"))
+            {
+                throw new Exception();
+            }
+
+            int option;
+
+            bool isInt = int.TryParse(entered, out option);
+
+            if (!isInt)
+            {
+                Console.Clear();
+                throw new ArgumentException(entered);
+            }
+
+            return option;
         }
 
         private void RunSearch()
@@ -78,32 +98,25 @@ namespace Lab2.Views
 
                 Console.WriteLine("Choose table:\r\n[1] courses\r\n[2] lectures\r\n\r\n write \"back\" to return to the main menu");
 
-                string entered = Console.ReadLine();
-
-                if (entered.Equals("back"))
-                    break;
-                
-
-                int option;
-
-                bool isInt = int.TryParse(entered, out option);
-
-                if (!isInt)
+                try
                 {
-                    Console.Clear();
-                    continue;
+                    int option = GetOption();
+
+                    switch (option)
+                    {
+                        case 1:
+                            OperationsWithCourses();
+                            break;
+                        case 2:
+                            OperationsWithLectures();
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                switch (option)
+                catch
                 {
-                    case 1:
-                        OperationsWithCourses();
-                        break;
-                    case 2:
-                        OperationsWithLectures();
-                        break;
-                    default:
-                        break;
+                    break;
                 }
 
                 Console.Clear();
@@ -118,37 +131,30 @@ namespace Lab2.Views
 
                 Console.WriteLine("Choose operation:\r\n[1] create\r\n[2] edit\r\n[3] delete\r\n\r\n write \"back\" to step back");
 
-                string entered = Console.ReadLine();
+                try
+                {
+                    int option = GetOption();
 
-                if (entered.Equals("back"))
+                    switch (option)
+                    {
+                        case 1:
+                            CreateCourse();
+                            break;
+                        case 2:
+                            EditCourse();
+                            break;
+                        case 3:
+                            DeleteCourse();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                catch
+                {
                     break;
-
-
-                int option;
-
-                bool isInt = int.TryParse(entered, out option);
-
-                if (!isInt)
-                {
-                    Console.Clear();
-                    continue;
                 }
-
-                switch (option)
-                {
-                    case 1:
-                        CreateCourse();
-                        break;
-                    case 2:
-                        EditCourse();
-                        break;
-                    case 3:
-                        DeleteCourse();
-                        break;
-                    default:
-                        break;
-                }
-
+                
                 Console.Clear();
             }
         }
