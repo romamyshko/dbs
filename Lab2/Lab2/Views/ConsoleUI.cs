@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Lab2.Models;
 using Lab2.Controllers;
 using Microsoft.Extensions.Options;
+using System.Diagnostics;
 
 namespace Lab2.Views
 {
@@ -32,7 +33,7 @@ namespace Lab2.Views
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Choose working option:\r\n[1] search in the database\r\n[2] make changes in the database\r\n\r\nwrite \"exit\" to exit the program");
+                Console.WriteLine("Choose working option:\r\n[1] filter data in the database\r\n[2] make changes in the database\r\n\r\nwrite \"exit\" to exit the program");
 
                 try
                 {
@@ -41,7 +42,7 @@ namespace Lab2.Views
                     switch (option)
                     {
                         case 1:
-                            Console.WriteLine();
+                            RunFilter();
                             break;
                         case 2:
                             RunMakingChanges();
@@ -87,11 +88,6 @@ namespace Lab2.Views
             return option;
         }
 
-        private void RunSearch()
-        {
-            Console.Clear();
-        }
-
         private void RunMakingChanges()
         {
             while (true)
@@ -120,6 +116,64 @@ namespace Lab2.Views
                 {
                     break;
                 }
+            }
+        }
+
+        private void RunFilter()
+        {
+            Console.Clear();
+
+            Console.WriteLine("Filtering the course table by created day, cost and name");
+
+            DateTime fromTime, toTime;
+
+            try
+            {
+                (fromTime, toTime) = GetTimeSpanCreationCourses();
+
+            }
+            catch
+            {
+                return;
+            }
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            stopwatch.Start();
+            _courseDBContext.Courses.Where(course => course.Name.Contains("a") && course.Cost < 50 && course.CreatedAt >= fromTime && course.CreatedAt <= toTime);
+            stopwatch.Stop();
+
+            Console.WriteLine($"Elapsed Time is {stopwatch.ElapsedMilliseconds} ms");
+            Console.WriteLine("Press any key to continue...");
+            if (Console.ReadLine() != "")
+                return;
+        }
+
+        private (DateTime fromTime, DateTime toTime) GetTimeSpanCreationCourses()
+        {
+            while (true)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Write creation date in such format: 31/12/2020-28/02/2022\r\n write \"back\" to return back");
+
+                string[] entered = Console.ReadLine().Split('-');
+
+                if (entered[0].Equals("back"))
+                    throw new Exception();
+                    
+                DateTime fromTime, toTime;
+                try
+                {
+                    fromTime = DateTime.Parse(entered[0]);
+                    toTime = DateTime.Parse(entered[1]);
+                }
+                catch 
+                {
+                    continue;
+                }
+
+                return (fromTime, toTime);
             }
         }
     }
