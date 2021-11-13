@@ -28,7 +28,6 @@ namespace Lab2.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine("Creating error!");
                 return -1;
             }
             _courseDBContext.SaveChanges();
@@ -45,10 +44,8 @@ namespace Lab2.Controllers
             }
             catch
             {
-                Console.WriteLine("Updating error!");
+                return -1;
             }
-
-            return 0;
         }
 
         public Course GetCourse(int id)
@@ -71,7 +68,7 @@ namespace Lab2.Controllers
             }
             catch
             {
-                Console.WriteLine("Deleting error!");
+                return -1;
             }
 
             return 1;

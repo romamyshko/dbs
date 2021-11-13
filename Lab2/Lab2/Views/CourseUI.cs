@@ -120,23 +120,18 @@ namespace Lab2.Views
         {
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("Enter course id\r\n\r\n write \"back\" to step back");
-
                 int courseId = -1;
-
                 try
                 {
-                    courseId = ConsoleUI.GetIntInput();
+                    courseId = GetCourseId();
                 }
-                catch (ArgumentException)
-                {
-                    continue;
-                }
-                catch (Exception)
+                catch
                 {
                     return;
                 }
+
+                if (courseId == -1)
+                    continue;
 
                 Course course = _controller.GetCourse(courseId);
 
@@ -175,8 +170,63 @@ namespace Lab2.Views
 
         private void DeleteCourse()
         {
+            while (true)
+            {
+                int courseId = -1;
+                try
+                {
+                    courseId = GetCourseId();
+                }
+                catch
+                {
+                    return;
+                }
 
+                if (courseId == -1)
+                    continue;
+                try
+                {
+                    if (_controller.Delete(courseId) == 1)
+                    {
+                        Console.WriteLine("Operation is successfull. Press any key to continue...");
+                        if (Console.ReadKey().Equals(new ConsoleKeyInfo()))
+                            return;
+                    } 
+                    else
+                    {
+                        Console.WriteLine("Course was not found");
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("Some error occur");
+                    Thread.Sleep(1000);
+                    return;
+                }
+
+                return;
+            }
         }
 
+        private int GetCourseId()
+        {
+            Console.Clear();
+            Console.WriteLine("Enter course id\r\n\r\n write \"back\" to step back");
+
+            int courseId = -1;
+
+            try
+            {
+                courseId = ConsoleUI.GetIntInput();
+            }
+            catch (ArgumentException)
+            {
+                return courseId;
+            }
+            
+            return courseId;
+        }
     }
 }
