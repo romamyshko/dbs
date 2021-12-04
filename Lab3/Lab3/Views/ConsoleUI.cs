@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Lab2.Models;
-using Lab2.Controllers;
+using Lab3.Models;
+using Lab3.Controllers;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 
-namespace Lab2.Views
+namespace Lab3.Views
 {
     public class ConsoleUI
     {
